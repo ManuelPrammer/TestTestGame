@@ -4,10 +4,15 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Unity Web Player | bowlingGame</title>
+    <link rel="stylesheet" href="TemplateData/diagnostics.css">
+    <script src="TemplateData/diagnostics.js"></script>
   </head>
   <body style="text-align: center; padding: 0; border: 0; margin: 0;">
     <canvas id="unity-canvas" width=1080 height=2400 tabindex="-1" style="width: 1080px; height: 2400px; background: #231F20"></canvas>
-    <script src="Build/BowlingGameBuild.loader.js"></script>
+    <div id="unity-footer">
+        <img id="diagnostics-icon" src="TemplateData/webmemd-icon.png">
+    </div>
+    <script src="Build/eb21f9ae924adc6ad0bb89679a15a43c.loader.js"></script>
     <script>
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         // Mobile device style: fill the whole browser client area with the game canvas:
@@ -23,13 +28,19 @@
 
         document.body.style.textAlign = "left";
 
+        // position the diagnostics icon in the corner on the canvas
+        let diagnostics_icon = document.getElementById("diagnostics-icon");
+        diagnostics_icon.style.position = "fixed";
+        diagnostics_icon.style.bottom = "10px";
+        diagnostics_icon.style.right = "0px";
+        canvas.after(diagnostics_icon);
       }
 
       createUnityInstance(document.querySelector("#unity-canvas"), {
         arguments: [],
-        dataUrl: "Build/BowlingGameBuild.data.unityweb",
-        frameworkUrl: "Build/BowlingGameBuild.framework.js.unityweb",
-        codeUrl: "Build/BowlingGameBuild.wasm.unityweb",
+        dataUrl: "Build/cbadd65792090da66a2046eebc9a8fd9.data.unityweb",
+        frameworkUrl: "Build/f47b9c344a9bf2855501a7f2514d2e55.framework.js.unityweb",
+        codeUrl: "Build/4d4df2c006992c67a30d7f685361eb7b.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "bowlingGame",
@@ -37,6 +48,9 @@
         // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
         // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
       }).then((unityInstance) => {
+        document.getElementById("diagnostics-icon").onclick = () => {
+            unityDiagnostics.openDiagnosticsDiv(unityInstance.GetMetricsInfo);
+        };
       }).catch((message) => {
         alert(message);
       });
